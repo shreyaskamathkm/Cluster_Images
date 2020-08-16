@@ -1,5 +1,6 @@
 Bootstrap: docker
-From: shreyaskamathkm/nvidia_v10_python_3.7:ubuntu_16_cuda_toolkit_10_2
+From: shreyaskamathkm/cluster_images:ubuntu_16.04_cuda_10.2
+
 
 # https://github.com/horovod/horovod/issues/882
 # https://lambdalabs.com/blog/horovod-keras-for-multi-gpu-training/
