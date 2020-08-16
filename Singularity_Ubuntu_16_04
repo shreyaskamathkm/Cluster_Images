@@ -1,0 +1,104 @@
+Bootstrap: docker
+From: shreyaskamathkm/nvidia_v10_python_3.7:ubuntu_16_cuda_toolkit_10_2
+
+# https://github.com/horovod/horovod/issues/882
+# https://lambdalabs.com/blog/horovod-keras-for-multi-gpu-training/
+%setup
+# -----------------------------------------------------------------------------------
+# This is a port of the Dockerfile maintained at https://github.com/uber/horovod
+%environment
+# -----------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------
+# From my environments
+    export SHELL=/bin/bash
+    export CPATH="/usr/local/cuda/include:$CPATH"
+    export PATH="/usr/local/cuda/bin:$PATH"
+    export CUDA_HOME="/usr/local/cuda"
+    export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+%post
+# -----------------------------------------------------------------------------------
+# From my environments
+    mkdir /project /scratch
+
+    # post-setup script
+
+    apt-get -y update && apt-get install -y --allow-downgrades --allow-change-held-packages --no-install-recommends \
+        build-essential \
+        cmake \
+        g++-4.8 \
+        git \
+        curl \
+        vim \
+        wget \
+        ca-certificates \
+        libjpeg-dev \
+        libpng-dev \
+        libsm6 \
+        libxext6 \
+        libxrender-dev \
+        aria2 \
+        libibverbs* \
+        ibverbs-utils \
+        librdmacm* \
+        infiniband-diags \
+        libmlx4* \
+        libmlx5* \
+        libnuma*
+
+      apt-get -y autoremove
+
+
+# user requests  conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=10.2 -c pytorch
+  /opt/conda/bin/conda update -y --all
+  /opt/conda/bin/conda install pytorch torchvision cudatoolkit=10.2 -c pytorch
+  /opt/conda/bin/conda install -c anaconda gxx_linux-64
+  /opt/conda/bin/conda clean -ya
+
+# rest of the updates
+  /opt/conda/bin/pip install --no-cache-dir --upgrade pip
+  /opt/conda/bin/pip install --no-cache-dir natsort
+  /opt/conda/bin/pip install --no-cache-dir albumentations
+  /opt/conda/bin/pip uninstall -y opencv-python-headless
+  /opt/conda/bin/pip install --no-cache-dir opencv-python
+  /opt/conda/bin/pip install --no-cache-dir opencv-contrib-python
+  /opt/conda/bin/pip install --no-cache-dir PyContracts
+  /opt/conda/bin/pip install --no-cache-dir tensorflow-gpu
+  /opt/conda/bin/pip install --no-cache-dir Shapely
+  /opt/conda/bin/pip install --no-cache-dir tfa-nightly
+  /opt/conda/bin/pip install  mmcv-full==latest+torch1.6.0+cu102 -f https://openmmlab.oss-accelerate.aliyuncs.com/mmcv/dist/index.html
+  /opt/conda/bin/pip install --no-cache-dir portalocker
+  /opt/conda/bin/pip install --no-cache-dir tabulate
+  /opt/conda/bin/pip install --no-cache-dir pandas
+  /opt/conda/bin/pip install git+https://github.com/PytorchLightning/pytorch-lightning.git@master --upgrade
+  /opt/conda/bin/pip install --no-cache-dir test-tube
+  /opt/conda/bin/pip install --no-cache-dir wandb
+
+# Apex installation
+	mkdir -p /tmp/apex &&
+	cd /tmp/apex && \
+	git clone https://github.com/NVIDIA/apex && \
+	cd apex && \
+	/opt/conda/bin/pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./ && \
+	rm -rf /tmp/apex
+	cd /root
+
+# Install Open MPI
+    mkdir -p /tmp/openmpi && \
+    cd /tmp/openmpi && \
+    wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.4.tar.gz && \
+    tar zxf openmpi-4.0.4.tar.gz && \
+    cd openmpi-4.0.4 && \
+    ./configure --enable-orterun-prefix-by-default && \
+    make -j $(nproc) all && \
+    make install && \
+    ldconfig && \
+    rm -rf /tmp/openmpi
+    cd /root
+
+    # Install Horovod, temporarily using CUDA stubs
+        ldconfig /usr/local/cuda/targets/x86_64-linux/lib/stubs && \
+        HOROVOD_GPU_OPERATIONS=NCCL HOROVOD_WITHOUT_TENSORFLOW=1 HOROVOD_WITH_PYTORCH=1 /opt/conda/bin/pip install --no-cache-dir horovod && \
+        ldconfig
+
+  cd /workspace

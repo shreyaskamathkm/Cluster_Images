@@ -1,0 +1,52 @@
+FROM nvidia/cuda:10.2-base-ubuntu16.04
+
+#  docker build  -f Dockerfile_Ubuntu_18_04 -t bleh:1 .
+ENV CUDNN_VERSION=7.6.5.32-1+cuda10.2
+ENV NCCL_VERSION=2.7.8-1+cuda10.2
+ENV CUDA_VERSION=10-2
+
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
+        build-essential \
+        cmake \
+        g++-4.8 \
+        git \
+        curl \
+        vim \
+        wget \
+        ca-certificates \
+        cuda-toolkit-${CUDA_VERSION} \
+        libcudnn7=${CUDNN_VERSION} \
+        libnccl2=${NCCL_VERSION} \
+        libnccl-dev=${NCCL_VERSION} \
+        libjpeg-dev \
+        libpng-dev \
+        libsm6 \
+        libxext6 \
+        libxrender-dev \
+        aria2 \
+        libibverbs* \
+        ibverbs-utils \
+        librdmacm* \
+        infiniband-diags \
+        libmlx4* \
+        libmlx5* \
+        libnuma* && \
+        rm -rf /var/lib/apt/lists/*
+
+
+RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2020.07-Linux-x86_64.sh -O ~/anaconda.sh && \
+    /bin/bash ~/anaconda.sh -b -p /opt/conda && \
+    rm ~/anaconda.sh
+
+RUN /opt/conda/bin/conda update -y --all && \
+    /opt/conda/bin/conda install -c anaconda gxx_linux-64 && \
+    /opt/conda/bin/conda clean -ya
+
+ENV PATH /opt/conda/bin:$PATH
+
+# This must be done before pip so that requirements.txt is available
+
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+
+WORKDIR /workspace
+RUN chmod -R a+w /workspace
