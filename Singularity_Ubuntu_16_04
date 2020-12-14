@@ -67,7 +67,7 @@ From: shreyaskamathkm/cluster_images:ubuntu_16.04_cuda_10.2
   /opt/conda/bin/pip install --no-cache-dir tensorflow-gpu
   /opt/conda/bin/pip install --no-cache-dir Shapely
   /opt/conda/bin/pip install --no-cache-dir tfa-nightly
-  /opt/conda/bin/pip install --no-cache-dir mmcv-full==1.2.1 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.7.0/index.html
+  /opt/conda/bin/pip install --no-cache-dir mmcv-full===1.2.1 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.7.0/index.html
   /opt/conda/bin/pip install --no-cache-dir portalocker
   /opt/conda/bin/pip install --no-cache-dir tabulate
   /opt/conda/bin/pip install --no-cache-dir pandas
