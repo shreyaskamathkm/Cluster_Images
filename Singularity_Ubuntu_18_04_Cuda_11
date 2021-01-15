@@ -47,11 +47,12 @@ From: shreyaskamathkm/cluster_images:ubuntu_18.04_cuda_11
 
 # user requests
   /opt/conda/bin/conda update -y --all
-  /opt/conda/bin/conda install pytorch torchvision torchaudio cudatoolkit=11.0 -c pytorch-nightly
+  #/opt/conda/bin/conda install pytorch torchvision torchaudio cudatoolkit=11.0 -c pytorch-nightly
   /opt/conda/bin/conda install -c anaconda gxx_linux-64
   /opt/conda/bin/conda clean -ya
 
 # rest of the updates
+  /opt/conda/bin/pip install --no-cache-dir --pre torch torchvision torchaudio -f https://download.pytorch.org/whl/nightly/cu110/torch_nightly.html
   /opt/conda/bin/pip install --no-cache-dir --upgrade pip
   /opt/conda/bin/pip install --no-cache-dir natsort
   /opt/conda/bin/pip install --no-cache-dir albumentations
