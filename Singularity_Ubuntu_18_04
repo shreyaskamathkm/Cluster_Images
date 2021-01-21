@@ -48,7 +48,7 @@ From: shreyaskamathkm/cluster_images:ubuntu_18.04_cuda_10.2
 
 # user requests
   /opt/conda/bin/conda update -y --all
-  /opt/conda/bin/conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
+  /opt/conda/bin/conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.2 -c pytorch
   /opt/conda/bin/conda install -c anaconda gxx_linux-64
   /opt/conda/bin/conda clean -ya
 
@@ -63,7 +63,7 @@ From: shreyaskamathkm/cluster_images:ubuntu_18.04_cuda_10.2
   /opt/conda/bin/pip install --no-cache-dir tensorflow-gpu
   /opt/conda/bin/pip install --no-cache-dir Shapely
   /opt/conda/bin/pip install --no-cache-dir tfa-nightly
-  /opt/conda/bin/pip install --no-cache-dir mmcv-full===1.2.2 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.7.0/index.html
+  /opt/conda/bin/pip install --no-cache-dir mmcv-full===1.2.2 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.6.0/index.html
   /opt/conda/bin/pip install --no-cache-dir portalocker
   /opt/conda/bin/pip install --no-cache-dir tabulate
   /opt/conda/bin/pip install --no-cache-dir pandas
