@@ -76,6 +76,7 @@ From: shreyaskamathkm/cluster_images:ubuntu_18.04_cuda_10.2
   /opt/conda/bin/pip install --no-cache-dir pretrainedmodels
   /opt/conda/bin/pip install --no-cache-dir efficientnet-pytorch
   /opt/conda/bin/pip install --no-cache-dir timm
+  /opt/conda/bin/pip install --no-cache-dir nibabel
 
 # Apex installation
 	mkdir -p /tmp/apex &&
