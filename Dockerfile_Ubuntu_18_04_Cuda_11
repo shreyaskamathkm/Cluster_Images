@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.0-cudnn8-devel-ubuntu18.04
+FROM nvidia/cuda:11.1.1-cudnn8-runtime-ubuntu18.04
 #  docker build  -f Dockerfile_Ubuntu_18_04 -t bleh:1 .
 
 RUN apt-get update && apt-get install -y --allow-change-held-packages --no-install-recommends apt-utils \
