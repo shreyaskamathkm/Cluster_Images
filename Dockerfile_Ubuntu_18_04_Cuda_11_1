@@ -1,5 +1,10 @@
 FROM nvidia/cuda:11.1.1-cudnn8-runtime-ubuntu18.04
+ARG DEBIAN_FRONTEND=noninteractive
 #  docker build  -f Dockerfile_Ubuntu_18_04 -t bleh:1 .
+
+ENV CUDNN_VERSION=8.0.5.39-1+cuda11.1
+ENV NCCL_VERSION=2.8.4-1+cuda11.1
+ENV CUDA_VERSION=11.1
 
 RUN apt-get update && apt-get install -y --allow-change-held-packages --no-install-recommends apt-utils \
         build-essential \
@@ -10,8 +15,10 @@ RUN apt-get update && apt-get install -y --allow-change-held-packages --no-insta
         vim \
         wget \
         ca-certificates \
-        libnccl2 \
-        libnccl-dev \
+        cuda-toolkit-${CUDA_VERSION} \
+        libcudnn8=${CUDNN_VERSION} \
+        libnccl2=${NCCL_VERSION} \
+        libnccl-dev=${NCCL_VERSION} \
         libjpeg-dev \
         libpng-dev \
         libsm6 \
