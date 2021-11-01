@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.2-base-ubuntu18.04
+FROM nvidia/cuda:10.2-runtime-ubuntu18.04
 
 #  docker build  -f Dockerfile_Ubuntu_18_04 -t bleh:1 .
 
@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
         rm -rf /var/lib/apt/lists/*
 
 
-RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2020.07-Linux-x86_64.sh -O ~/anaconda.sh && \
+RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh -O ~/anaconda.sh && \
     /bin/bash ~/anaconda.sh -b -p /opt/conda && \
     rm ~/anaconda.sh
 
